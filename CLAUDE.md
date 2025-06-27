@@ -81,6 +81,11 @@ notion-mcp 是一個 Model Context Protocol (MCP) 伺服器，提供 Notion API 
 - **錯誤分類**: 區分客戶端錯誤和伺服器錯誤
 - **錯誤日誌**: 記錄詳細的錯誤資訊供除錯
 
+### 環境變數管理
+- **依賴 Claude Code**: MCP 的環境變數應由 Claude Code 管理，而非在套件中使用 dotenv
+- **主流做法**: 不在 MCP 套件中包含 .env 載入邏輯
+- **設定方式**: 使用 `claude mcp add` 時透過 `-e` 參數設定
+
 ## 測試策略
 
 ### 測試類型
@@ -92,6 +97,27 @@ notion-mcp 是一個 Model Context Protocol (MCP) 伺服器，提供 Notion API 
 - **測試框架**: Jest 或 Vitest
 - **模擬工具**: 使用 mock 避免真實 API 呼叫
 - **覆蓋率**: 維持 80% 以上的測試覆蓋率
+
+## MCP 的正確理解與使用
+
+### MCP 本質
+- MCP 是 **Claude Code 的擴充工具**，不是專案依賴
+- 類似 VS Code 擴充功能，應該集中管理而非分散在各專案
+- 一次安裝，所有專案都能使用
+
+### 安裝位置
+- **推薦**: `~/mcp-servers/` 目錄集中管理
+- **避免**: 安裝在各個專案的 node_modules
+- **原因**: 避免重複安裝、版本不一致、設定困難
+
+### Claude Code 註冊語法
+```bash
+# 正確語法（注意 -- 雙破折號）
+claude mcp add <name> -e KEY=value -- <command> <args>
+
+# 實際範例
+claude mcp add notion -e NOTION_API_KEY=xxx -- node /path/to/index.js
+```
 
 ## npm 發佈準備
 
@@ -149,21 +175,33 @@ npm pack --dry-run
 npm publish
 ```
 
+### npm 發佈最佳實踐
+
+#### 套件命名策略
+- **使用 scope**: `@username/package-name` 避免名稱衝突
+- **好處**: 品牌一致性、避免命名衝突、易於識別
+- **範例**: `@elia-ori/notion-mcp`
+
+#### 發佈流程
+1. **更新 README.md** - npm 會自動使用作為套件說明
+2. **更新版本號** - 遵循語義化版本
+3. **提交並推送** - 保持 git 和 npm 同步
+4. **執行發佈** - `npm publish`
+
+#### 版本管理
+- **修復**: 0.1.0 → 0.1.1 (patch)
+- **新功能**: 0.1.0 → 0.2.0 (minor)
+- **重大變更**: 0.1.0 → 1.0.0 (major)
+
 ### 台灣慣用詞對照表
 請避免使用大陸用詞，統一使用台灣慣用詞彙。詳細對照表請參考：
 - [台灣慣用詞對照表](./.claude/docs/taiwanese-terminology.md) - 完整的用詞規範和使用原則
 ## 敏感資訊管理
 
 ### API 金鑰和憑證
-以下資訊僅供專案維護者使用，請勿外洩：
-
-- **測試用 Notion API Key**: `secret_xxxxxxxxxxxxxxxxxxxxx` (替換為實際金鑰)
-- **測試工作區 ID**: `xxxxx-xxxx-xxxx-xxxx` (替換為實際 ID)
+- **環境變數管理**: API Key 應透過 Claude Code 的環境變數設定，而非儲存在專案中
 - **npm 發佈 token**: 儲存在 GitHub Secrets 中
-
-### 測試資料
-- **測試頁面 ID**: 用於整合測試的固定頁面
-- **測試資料庫 ID**: 用於查詢測試的資料庫
+- **安全原則**: 不在程式碼或文件中儲存實際的金鑰
 
 ## Git 工作流程
 
