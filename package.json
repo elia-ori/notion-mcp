@@ -23,11 +23,11 @@
   "keywords": ["mcp", "notion", "server", "model-context-protocol", "notion-api", "claude"],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/your-username/notion-mcp.git"
+    "url": "git+https://github.com/elia-ori/notion-mcp.git"
   },
-  "homepage": "https://github.com/your-username/notion-mcp#readme",
+  "homepage": "https://github.com/elia-ori/notion-mcp#readme",
   "bugs": {
-    "url": "https://github.com/your-username/notion-mcp/issues"
+    "url": "https://github.com/elia-ori/notion-mcp/issues"
   },
   "files": [
     "dist",

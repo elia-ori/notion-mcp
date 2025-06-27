@@ -48,7 +48,7 @@ claude mcp add notion -e NOTION_API_KEY=your_actual_api_key -- node ~/mcp-server
 
 ```bash
 cd ~/Projects/mcp-servers  # 或你的 MCP 專案目錄
-git clone https://github.com/Ori-Elia/notion-mcp.git
+git clone https://github.com/elia-ori/notion-mcp.git
 cd notion-mcp
 npm install
 ```
