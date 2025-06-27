@@ -15,38 +15,67 @@
 1. Node.js 18 或更高版本
 2. Notion API Key（從 [Notion Integrations](https://www.notion.so/my-integrations) 取得）
 
-## 安裝步驟
+## 安裝方式
 
-### 1. 複製專案並安裝依賴
+您可以選擇從 npm 安裝（推薦）或從原始碼安裝。
+
+### 從 npm 安裝（推薦）
+
+#### 1. 安裝套件
+
+建議在專用目錄安裝 MCP 伺服器：
+
+```bash
+mkdir -p ~/mcp-servers/notion
+cd ~/mcp-servers/notion
+npm init -y
+npm install @elia-ori/notion-mcp
+```
+
+#### 2. 在 Claude Code 註冊
+
+```bash
+claude mcp add notion -e NOTION_API_KEY=your_actual_api_key -- node ~/mcp-servers/notion/node_modules/@elia-ori/notion-mcp/dist/index.js
+```
+
+記得替換：
+- `your_actual_api_key` 為您的 Notion API Key
+- `~` 會自動展開為您的家目錄路徑
+
+### 從原始碼安裝
+
+#### 1. 複製專案並安裝依賴
 
 ```bash
 cd ~/Projects/mcp-servers  # 或你的 MCP 專案目錄
-git clone [your-repo-url] notion-mcp  # 如果有 git repo
+git clone https://github.com/Ori-Elia/notion-mcp.git
 cd notion-mcp
 npm install
 ```
 
-### 2. 設定 Notion API Key
+#### 2. 建置專案
 
-複製環境變數範例檔案：
 ```bash
-cp .env.example .env
+npm run build
 ```
 
-編輯 `.env` 檔案，加入你的 Notion API Key：
-```
-NOTION_API_KEY=secret_xxxxxxxxxxxxxxxxxxxxx
+#### 3. 在 Claude Code 中註冊 MCP 伺服器
+
+```bash
+claude mcp add notion -e NOTION_API_KEY=your_actual_api_key -- node ~/Projects/mcp-servers/notion-mcp/dist/index.js
 ```
 
-### 3. 建立 Notion Integration
+## Notion 設定
+
+### 1. 建立 Notion Integration
 
 1. 前往 https://www.notion.so/my-integrations
 2. 點擊 "New integration"
 3. 給 integration 一個名稱（例如 "Claude Code MCP"）
 4. 選擇你要連接的工作區
-5. 複製 "Internal Integration Token"
+5. 複製 "Internal Integration Token" 作為你的 API Key
 
-### 4. 授權 Integration 存取頁面
+### 2. 授權 Integration 存取頁面
 
 在 Notion 中，你需要明確授權 integration 存取特定頁面或資料庫：
 
@@ -54,23 +83,6 @@ NOTION_API_KEY=secret_xxxxxxxxxxxxxxxxxxxxx
 2. 點擊右上角的 "..." 選單
 3. 在 "Connections" 區域，點擊 "Add connections"
 4. 搜尋並選擇你的 integration
-
-### 5. 建置專案
-
-```bash
-npm run build
-```
-
-### 6. 在 Claude Code 中註冊 MCP 伺服器
-
-```bash
-claude mcp add notion
-```
-
-當提示時，輸入：
-- Name: `notion`
-- Command: `node`
-- Arguments: `/Users/alvin/Projects/mcp-servers/notion-mcp/dist/index.js`
 
 ## 使用方式
 
